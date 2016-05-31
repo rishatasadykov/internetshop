@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Catalog</h3>
+
+{% if goods %}
+    {% for good in goods %}
+        <li><a href="{% url 'good:good_page' good.id %}" >{{ good }}</a></li>
+    {% endfor %}
+{% else %}
+    Sorry, there are no goods yet.
+{% endif %}
+<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+
+{% endblock %}

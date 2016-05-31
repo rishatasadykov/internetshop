@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center><h3>Your goods</h3></center>
+{% if error %}
+    {{ error }}
+{% endif %}
+{% if good_list %}
+{% for good in good_list %}
+    <p>{{ good.good }}</p>
+{% endfor %}
+Total price: {{ sum }}
+<br/>
+Your balance: {{ balance }}
+<p><a href="{% url 'good:buy_goods' %}"><input type="button" value="Buy all"></a></p>
+{% else %}
+<h3>Your cart is empty</h3>
+{% endif %}
+
+<p><a href="{% url 'main:main' %}"><input type="button" value="Go to main"></a></p>
+{% endblock %}

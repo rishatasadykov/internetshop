@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'login' %}{{ next }}" method="POST">
+
+    {% csrf_token %}
+
+    {% if error %}
+
+        {{ error }}
+
+    {% endif %}
+
+    {{ f.as_p }}
+
+    <p><input type="checkbox" name="remember_me" value="true">Remember Me</input></p>
+
+    <p><input type="submit" value="Login" /> </p>
+
+</form>
+<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+{% endblock %}

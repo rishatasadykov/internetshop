@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script  src="{% static 'js/jquery-1.12.3.js' %}"></script>
+<script type="text/javascript">
+$(function() {
+  var width=$('.slider-box').width();
+      interval = 4000;
+
+  $('.slider img:last').clone().prependTo('.slider');
+  $('.slider img').eq(1).clone().appendTo('.slider');
+  $('.slider').css('margin-left', -width);
+  setInterval('animation()',interval);
+});
+function animation(){
+
+  var margin = parseInt($('.slider').css('marginLeft'));
+      width=$('.slider-box').width(),
+      slidersAmount=$('.slider').children().length;
+  if(margin!=(-width*(slidersAmount-1)))
+  {
+    margin=margin-width;
+  }else{
+    $('.slider').css('margin-left', -width);
+    margin=-width*2;
+  }
+  $('.slider').animate({marginLeft:margin},1000);
+};
+</script>
+    {% if not is_authenticated %}
+        <p align="right"><a href="{% url 'main:register' %}">Sign up</a>|
+        <a href="{% url 'login' %}" >Sign in</a></p>
+    {% else %}
+        <p align="right"><a href="{% url 'logout' %}" >Log out</a></p>
+    {% endif %}
+<h3>Hello, {{ name }}!</h3>
+<h2>Our goods</h2>
+<div class="slider-box">
+  <div class="slider">
+        {% for good in goods %}
+            <div class="slide"><a href="{% url 'good:good_page' good.id %}"><img src="{{ good.image.url }}"/></a></div>
+        {% endfor %}
+    </div>
+</div>
+<h3><a href="{% url 'main:catalog' %}" >Catalog</a></h3>
+{% if is_authenticated %}
+<h3><a href="{% url 'user_profile:user_profile' %}" >My profile</a></h3>
+<h3><a href="{% url 'cart' user.id %}" >Cart</a></h3>
+<h3><a href="{% url 'main:feedback' %}" >Leave feedback</a></h3>
+{% endif %}
+<h3><a href="{% url 'good:search' %}" >Search</a></h3>
+{% endblock %}

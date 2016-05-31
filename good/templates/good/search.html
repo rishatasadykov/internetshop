@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{% url 'good:search' %}" method="post">
+{% csrf_token %}
+<input type="text" name="query"/> <input type="submit" value="Search"/>
+<br/><br/>
+{% if goods %}
+    {% for good in goods %}
+        <li><a href="{% url 'good:good_page' good.id %}" >{{ good }}</a></li>
+    {% endfor %}
+{% endif %}
+
+</form>
+<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"/>
+</head>
+<body>
+    <center><h1>Welcome to our internet shop!</h1></center>
+<div style="min-height: 600px">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<hr/>
+<center>(c) Sadykov Rishat, 2016</center>
+</body>
+</html>

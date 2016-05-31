@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>{{ good.title }}</h3>
+
+    {% if good.image %}
+    <p><img src="{{ good.image.url }}" width="300" height="200"/></p>
+    {% endif %}
+    <p><a href="{% url 'main:main' %}"><input type="button" value="Go to main"></a></p>
+    <p>Category:{{ categories }}</p>
+
+    <p>Price: {{ good.price }}</p>
+    <p>Rating: {{ good.rating }}</p>
+    <p>Amount: {{ good.amount }}</p>
+    <p>Description: {{ good.description }}</p>
+    {% if error %}
+        <p>Sorry, goods ran out.</p>
+    {% else %}
+        <p><a href="{% url 'good:add_to_cart' good.id %}"><input type="button" value="Add to cart"></a></p>
+    {% endif %}
+
+
+<p>Comments:</p>
+{% for comment in comments %}
+    <p>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }} {{ comment.pub_date }} Rating: {{ comment.rating }}<br>
+    {{ comment.text }}</p>
+    <p>=====================</p>
+{% endfor %}
+
+<form action="{% url 'good:good_page' good.id %}" method="POST">{% csrf_token %}
+
+    {{ f.as_p }}
+    <p><input type="submit" value="Add new comment"></p>
+</form>
+{% endblock %}

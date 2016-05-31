@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<form action="{% url 'user_profile:top_up'%}" method="POST">
+{% if error %}
+    {{ error }}
+{% endif %}
+{% csrf_token %}
+
+<center>{{ form.as_p }}</center>
+
+<center><input type="submit" value="Top up"></center>
+
+</form>
+
+<center><p><a href="{% url 'user_profile:user_profile' %}" >My profile</a></p></center>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+{% if profile.avatar %}
+    <p><img src="{{ profile.avatar.url }}" width="200" height="300"/></p>
+{% endif %}
+<a href="{% url 'user_profile:change_avatar' %}" ><button>Change avatar</button></a>
+{% if profile.user.first_name %}
+    <p>Name: {{ profile.user.first_name }}</p>
+{% endif %}
+{% if profile.user.last_name %}
+    <p>Surname: {{ profile.user.last_name }}</p>
+{% endif %}
+{% if profile.user.email %}
+    <p>E-mail: {{ profile.user.email }}</p>
+{% endif %}
+{% if profile.site %}
+    <p>Site: {{ profile.site }}</p>
+{% endif %}
+<p>Balance: {{ profile.balance }} {{ profile.currency }}</p>
+{% if timeout %}
+    <p>{{ timeout}}</p>
+{% endif %}
+<p><a href="{% url 'user_profile:top_up' %}" >Top up my account</a></p>
+
+<a href="{% url 'user_profile:edit_user_profile' profile.user.id %}" >Edit my profile</a>
+
+<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+
+{% endblock %}

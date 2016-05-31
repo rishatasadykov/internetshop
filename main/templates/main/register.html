@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'main:register' %}" method="POST">
+
+    {% csrf_token %}
+
+    {% if error %}
+
+        <center>{{ error }}</center>
+
+    {% endif %}
+
+    <center>{{ f.as_p }}</center>
+
+    <center><input type="submit" value="Register" /></center>
+
+</form>
+
+<center><a href="{% url 'main:main' %}" >Go to main</a></center>
+
+{% endblock %}
