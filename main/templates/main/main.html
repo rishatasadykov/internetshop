@@ -34,7 +34,8 @@ function animation(){
         <p align="right"><a href="{% url 'logout' %}" >Log out</a></p>
     {% endif %}
 <h3>Hello, {{ name }}!</h3>
-<h2>Our goods</h2>
+<center><h2>Our goods</h2></center>
+<center>
 <div class="slider-box">
   <div class="slider">
         {% for good in goods %}
@@ -42,11 +43,16 @@ function animation(){
         {% endfor %}
     </div>
 </div>
-<h3><a href="{% url 'main:catalog' %}" >Catalog</a></h3>
+</center>
+<table>
+    <tr>
+<td><h3><a class="button13" href="{% url 'main:catalog' %}" >Catalog</a></h3></td>
 {% if is_authenticated %}
-<h3><a href="{% url 'user_profile:user_profile' %}" >My profile</a></h3>
-<h3><a href="{% url 'cart' user.id %}" >Cart</a></h3>
-<h3><a href="{% url 'main:feedback' %}" >Leave feedback</a></h3>
+<td><h3><a class="button13" href="{% url 'user_profile:user_profile' %}" >My profile</a></h3></td>
+<td><h3><a class="button13" href="{% url 'cart' user.id %}" >Cart</a></h3></td>
+<td><h3><a class="button13" href="{% url 'main:feedback' %}" >Leave feedback</a></h3></td>
 {% endif %}
-<h3><a href="{% url 'good:search' %}" >Search</a></h3>
+<td><h3><a class="button13" href="{% url 'good:search' %}" >Search</a></h3></td>
+    </tr>
+</table>
 {% endblock %}

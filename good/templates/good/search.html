@@ -1,16 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+<p align="right"> <a class="button13" href="{% url 'main:main' %}">Main</a></p>
 <form action="{% url 'good:search' %}" method="post">
 {% csrf_token %}
-<input type="text" name="query"/> <input type="submit" value="Search"/>
+<center><input class="search" type="text" name="query" placeholder="Search.."/></center>
+</form>
 <br/><br/>
+<table class="goods">
+    <tr>
 {% if goods %}
     {% for good in goods %}
-        <li><a href="{% url 'good:good_page' good.id %}" >{{ good }}</a></li>
+        <td>
+            <a href="{% url 'good:good_page' good.id %}" ><img src="{{ good.image.url }}"></a>
+            <p>{{ good.title}}</p>
+            <p><strong>{{ good.price }} {{ good.currency }}</strong></p>
+        </td>
     {% endfor %}
 {% endif %}
+    </tr>
+</table>
 
 </form>
-<p><a href="{% url 'main:main' %}" >Go to main</a></p>
 {% endblock %}

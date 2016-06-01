@@ -6,7 +6,7 @@
 $(document).ready(function(){
     var maxCount = 1000;
 
-    $("#counter").html(maxCount);
+    $("#counter").html(maxCount+" symbols left");
 
     $("#txt").keyup(function() {
     var revText = this.value.length;
@@ -15,22 +15,25 @@ $(document).ready(function(){
             {
             this.value = this.value.substr(0, maxCount);
             }
-        var cnt = (maxCount - revText);
-        if(cnt <= 0){$("#counter").html('0');}
+        var cnt = (maxCount - revText) + " symbols left";
+        if(cnt <= 0){$("#counter").html('0 symbols left');}
         else {$("#counter").html(cnt);}
 
     });
 });
 </script>
+<p align="right"> <a class="button13" href="{% url 'main:main' %}">Main</a></p>
 <form action="{% url 'main:feedback' %}" method="POST">
 
     {% csrf_token %}
 
-<div id="counter"></div><br/>
-Write your message here: <p><textarea name="message" id="txt"></textarea></p>
+Write your message here: <br/><br/>
+    <div id="counter"></div>
+    <p><textarea name="message" id="txt"></textarea></p>
+<br/>
 
 <p><input type="submit" value="Submit"></p>
 
 </form>
-<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+
 {% endblock %}

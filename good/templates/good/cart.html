@@ -1,21 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<center><h3>Your goods</h3></center>
+<p align="right"> <a class="button13" href="{% url 'main:main' %}">Main</a></p>
+<center><h2>Your goods</h2></center>
 {% if error %}
-    {{ error }}
+    <div id="error"><h3>{{ error }}</h3></div>
 {% endif %}
 {% if good_list %}
 {% for good in good_list %}
-    <p>{{ good.good }}</p>
+    <a href="{% url 'good:good_page' good.good.id %}" ><img src="{{ good.good.image.url }}"></a>
+    <p>{{ good.good.title}}</p>
+    <p><strong>{{ good.good.price }} {{ good.good.currency }}</strong></p>
+    <a href="{% url 'good:remove' good.id %}" >Remove from cart</a>
+    <hr/>
 {% endfor %}
-Total price: {{ sum }}
+Total price: {{ sum }} {{ currency }}
 <br/>
-Your balance: {{ balance }}
+Your balance: {{ balance }} {{ currency }}
 <p><a href="{% url 'good:buy_goods' %}"><input type="button" value="Buy all"></a></p>
 {% else %}
 <h3>Your cart is empty</h3>
 {% endif %}
 
-<p><a href="{% url 'main:main' %}"><input type="button" value="Go to main"></a></p>
+
 {% endblock %}

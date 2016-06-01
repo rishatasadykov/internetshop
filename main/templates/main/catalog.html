@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<h3>Catalog</h3>
-
+<p align="right"><a class="button13" href="{% url 'main:main' %}" >Main</a></p>
+<center><h2>Catalog</h2></center>
+<table class="goods">
+    <tr>
 {% if goods %}
     {% for good in goods %}
-        <li><a href="{% url 'good:good_page' good.id %}" >{{ good }}</a></li>
+
+            <a href="{% url 'good:good_page' good.id %}" ><img src="{{ good.image.url }}"></a>
+            <p>{{ good.title}}</p>
+            <p><strong>{{ good.price }} {{ good.currency }}</strong></p>
+
     {% endfor %}
 {% else %}
     Sorry, there are no goods yet.
 {% endif %}
-<p><a href="{% url 'main:main' %}" >Go to main</a></p>
+    </tr>
+</table>
 
 {% endblock %}

@@ -54,16 +54,68 @@ def good_page(request, good_id):
         return HttpResponse("405")
 
 
+def calculate_sum(good_list, pc):
+    USDRUB = ""
+    USDEUR = ""
+    RUBEUR = ""
+    RUBUSD = ""
+    EURRUB = ""
+    EURUSD = ""
+    sum = 0
+    file = open("currency/currency.txt", "r+")
+    for line in file:
+        s = line.split()
+        if s[0] == "USDRUB":
+            USDRUB = int(s[1])
+        elif s[0] == "USDEUR":
+            USDEUR = int(s[1])
+        elif s[0] == "RUBEUR":
+            RUBEUR = int(s[1])
+        elif s[0] == "RUBUSD":
+            RUBUSD = int(s[1])
+        elif s[0] == "EURRUB":
+            EURRUB = int(s[1])
+        elif s[0] == "EURUSD":
+            EURUSD = int(s[1])
+    for g in good_list:
+            if g.good.currency == pc:
+                sum += g.good.price
+            else:
+                if g.good.currency == "USD":
+                    if pc == "RUB":
+                        price = int(g.good.price*USDRUB)
+                        sum += price
+                    elif pc == "EUR":
+                        price = int(g.good.price*USDEUR)
+                        sum += price
+                elif g.good.currency == "RUB":
+                    if pc == "EUR":
+                        price = int(g.good.price*RUBEUR)
+                        sum += price
+                    elif pc == "USD":
+                        price = int(g.good.price*RUBUSD)
+                        sum += price
+                elif g.good.currency == "EUR":
+                    if pc == "RUB":
+                        price = int(g.good.price*EURRUB)
+                        sum += price
+                    elif pc == "USD":
+                        price = int(g.good.price*EURUSD)
+                        sum += price
+    return sum
+
+
 @login_required(login_url=reverse_lazy("login"))
 def cart_page(request, user_id):
     if request.method == "GET":
         good_list = Cart.objects.filter(user=request.user)
         user = UserProfile.objects.get(user=request.user)
+        pc = user.currency
         balance = user.balance
-        sum = 0
-        for good in good_list:
-            sum += good.good.price
-        return render(request, "good/cart.html", {"good_list": good_list, "sum": sum, "balance": balance})
+        sum = calculate_sum(good_list, pc)
+        currency = user.currency
+        return render(request, "good/cart.html", {"good_list": good_list, "sum": sum, "balance": balance,
+                                                  "currency": currency})
 
 
 @login_required(login_url=reverse_lazy("login"))
@@ -73,19 +125,27 @@ def add_to_cart(request, good_id):
     cart.user = request.user
     cart.good = good
     cart.save()
+    good.amount -= 1
+    good.save()
     return redirect(reverse("good:good_page", args=(good_id,)))
 
 
 @login_required(login_url=reverse_lazy("login"))
 def buy_goods(request):
-    total_sum = 0
+
     goods = Cart.objects.filter(user=request.user)
-    for g in goods:
-        total_sum += g.good.price
     profile = UserProfile.objects.get(user=request.user)
+    pc = profile.currency
+    total_sum = calculate_sum(goods, pc)
     if profile.balance < total_sum:
-        error = "You have not enough money for purchasing"
-        return render(request, "good/cart.html", {"error": error, "good_list": goods})
+        error = "You have not enough money"
+        user = UserProfile.objects.get(user=request.user)
+        pc = user.currency
+        balance = user.balance
+        sum = calculate_sum(goods, pc)
+        currency = user.currency
+        return render(request, "good/cart.html", {"error": error, "good_list": goods, "sum": sum, "balance": balance,
+                                                  "currency": currency})
     else:
         profile.balance -= total_sum
         profile.save()
@@ -104,3 +164,16 @@ def search(request):
     elif request.method == "POST":
         context = {'goods': Good.objects.filter(title__icontains=request.POST["query"])}
         return render(request, "good/search.html", context)
+
+
+def remove_from_cart(request, cart_id):
+    c = Cart.objects.get(id=cart_id)
+    g = Good.objects.get(id=c.good.id)
+    c.delete()
+    g.amount += 1
+    g.save()
+    return redirect(reverse("cart", args=(request.user.id,)))
+
+
+def hello(request):
+    return HttpResponse('Hello World!')

@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-
 {% block content %}
 
+<p align="right"><a class="button13" href="{% url 'main:catalog' %}">Catalog</a></p>
 <h3>{{ good.title }}</h3>
 
     {% if good.image %}
+
     <p><img src="{{ good.image.url }}" width="300" height="200"/></p>
     {% endif %}
-    <p><a href="{% url 'main:main' %}"><input type="button" value="Go to main"></a></p>
+
     <p>Category:{{ categories }}</p>
 
-    <p>Price: {{ good.price }}</p>
+    <p>Price: {{ good.price }} {{ good.currency }}</p>
     <p>Rating: {{ good.rating }}</p>
-    <p>Amount: {{ good.amount }}</p>
+    <p>Amount: {{ good.amount }}</p><div id="am"></div>
     <p>Description: {{ good.description }}</p>
     {% if error %}
         <p>Sorry, goods ran out.</p>
     {% else %}
-        <p><a href="{% url 'good:add_to_cart' good.id %}"><input type="button" value="Add to cart"></a></p>
+        <p><a class="button13" href="{% url 'good:add_to_cart' good.id %}">Add to cart</a></p>
     {% endif %}
-
 
 <p>Comments:</p>
 {% for comment in comments %}

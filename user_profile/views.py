@@ -43,7 +43,7 @@ def top_up(request):
         if request.session.has_key("visited"):
             old_time = request.session["visited"]
             if time.time() - old_time < 30:
-                error = "You can't top up your account more than once per 30 seconds. Here wait %s seconds" % (30 - int(time.time() - old_time))
+                error = "You can't top up your account more than once per 30 seconds. Wait %s seconds" % (30 - int(time.time() - old_time))
                 profile = UserProfile.objects.get(user=request.user)
                 return render(request, "user_profile/user_profile.html", {"profile": profile, "timeout": error})
             request.session["visited"] = time.time()

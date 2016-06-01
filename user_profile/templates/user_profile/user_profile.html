@@ -2,10 +2,11 @@
 
 {% block content%}
 
+<p align="right"> <a class="button13" href="{% url 'main:main' %}">Main</a></p>
+<center><h2>Your profile</h2></center>
 {% if profile.avatar %}
-    <p><img src="{{ profile.avatar.url }}" width="200" height="300"/></p>
+    <p><a href="{% url 'user_profile:change_avatar' %}" ><img src="{{ profile.avatar.url }}" width="200" height="300"/></a></p>
 {% endif %}
-<a href="{% url 'user_profile:change_avatar' %}" ><button>Change avatar</button></a>
 {% if profile.user.first_name %}
     <p>Name: {{ profile.user.first_name }}</p>
 {% endif %}
@@ -26,6 +27,5 @@
 
 <a href="{% url 'user_profile:edit_user_profile' profile.user.id %}" >Edit my profile</a>
 
-<p><a href="{% url 'main:main' %}" >Go to main</a></p>
 
 {% endblock %}

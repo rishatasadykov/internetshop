@@ -69,6 +69,7 @@ def register(request):
 
 
 
+
 def logout(request):
     auth_logout(request)
     return redirect(reverse("main:main"))
@@ -86,7 +87,6 @@ def login(request):
             context["next"] = "?next=" + request.GET["next"]
 
         return render(request, "main/login.html", context)
-
 
     elif request.method == "POST":
         username = request.POST["login"]
@@ -106,7 +106,8 @@ def login(request):
                     r.set_cookie(key="password", value=password, max_age=365 * 24 * 60 * 60)
                 return r
         else:
-            return render(request, "main/login.html", {"error": "Incorrect login/password"})
+            f = LoginForm()
+            return render(request, "main/login.html", {"error": "Incorrect login/password", "f": f})
     else:
         return HttpResponse("405")
 
